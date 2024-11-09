@@ -468,10 +468,14 @@ void Canvas::mouseMoveEvent(QMouseEvent* event)
     }
     else if (event->buttons() & Qt::RightButton)
     {
-        center = transform_matrix().inverted() *
-                 view_matrix().inverted() *
-                 QVector3D(-d.x() / (0.5*width()),
-                            d.y() / (0.5*height()), 0);
+        //center = transform_matrix().inverted() *
+        //         view_matrix().inverted() *
+        //         QVector3D(-d.x() / (0.5*width()),
+        //                    d.y() / (0.5*height()), 0);
+        center = (transform_matrix().inverted() * view_matrix().inverted()).map(
+            QVector3D(-d.x() / (0.5*width()),
+                      d.y() / (0.5*height()), 0)
+           );
         update();
     }
     mouse_pos = p;
@@ -484,9 +488,9 @@ void Canvas::wheelEvent(QWheelEvent *event)
     auto p = event->position();
     QVector3D v(1 - p.x() / (0.5*width()),
                 p.y() / (0.5*height()) - 1, 0);
-    QVector3D a = transform_matrix().inverted() *
-                  view_matrix().inverted() * v;
-
+    //QVector3D a = transform_matrix().inverted() *
+    //              view_matrix().inverted() * v;
+    QVector3D a = (transform_matrix().inverted() * view_matrix().inverted()).map(v);
     if (event->angleDelta().y() < 0)
     {
         for (int i=0; i > event->angleDelta().y(); --i)
@@ -505,8 +509,9 @@ void Canvas::wheelEvent(QWheelEvent *event)
     }
 
     // Then find the cursor's GL position post-zoom and adjust center.
-    QVector3D b = transform_matrix().inverted() *
-                  view_matrix().inverted() * v;
+    //QVector3D b = transform_matrix().inverted() *
+    //              view_matrix().inverted() * v;
+    QVector3D b = (transform_matrix().inverted() * view_matrix().inverted()).map(v);
     center += b - a;
     update();
 }
