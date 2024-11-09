@@ -4,6 +4,11 @@
 #include "canvas.h"
 #include "loader.h"
 #include "shaderlightprefs.h"
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    #include <QMessageBox>              // Qt6
+    #include <QFileDialog>              // Qt6
+#endif
+
 
 const QString Window::RECENT_FILE_KEY = "recentFiles";
 const QString Window::INVERT_ZOOM_KEY = "invertZoom";
@@ -189,7 +194,8 @@ Window::Window(QWidget *parent) :
             this, &Window::on_resetTransformOnLoad);
 
     view_menu->addAction(hide_menuBar_action);
-    hide_menuBar_action->setShortcut(Qt::CTRL + Qt::SHIFT + Qt::Key_C);
+    //hide_menuBar_action->setShortcut(Qt::CTRL + Qt::SHIFT + Qt::Key_C);
+    hide_menuBar_action->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_C));   // remove deprecated warning in QT 5/6
     hide_menuBar_action->setCheckable(true);
     QObject::connect(hide_menuBar_action, &QAction::toggled,
             this, &Window::on_hide_menuBar);

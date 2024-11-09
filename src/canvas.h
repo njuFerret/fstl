@@ -1,7 +1,16 @@
 #ifndef CANVAS_H
 #define CANVAS_H
 
-#include <QtOpenGL>
+//#include <QtGlobal>
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    #include <QOpenGLWidget>            // Qt6
+    #include <QOpenGLFunctions>         // Qt6
+    #include <QPropertyAnimation>       // Qt6
+#else
+    #include <QtOpenGL>                 // Qt5
+#endif
+
 #include <QSurfaceFormat>
 #include <QOpenGLShaderProgram>
 

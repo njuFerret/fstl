@@ -2,6 +2,10 @@
 #include "canvas.h"
 #include <QColorDialog>
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    #include <QtWidgets> // Qt6
+#endif
+
 const QString ShaderLightPrefs::PREFS_GEOM = "shaderPrefsGeometry";
 
 ShaderLightPrefs::ShaderLightPrefs(QWidget *parent, Canvas *_canvas) : QDialog(parent)
